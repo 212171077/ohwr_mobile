@@ -101,10 +101,16 @@ class _AlertsScreenState extends State<AlertsScreen> {
                 bottomRight: Radius.circular(24),
               ),
             ),
-            padding: const EdgeInsets.fromLTRB(24, 24, 24, 32),
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top + 16,
+              left: 24,
+              right: 24,
+              bottom: 32,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
+                // Top section with title and sun icon
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -169,12 +175,12 @@ class _AlertsScreenState extends State<AlertsScreen> {
                       width: 48,
                       height: 48,
                       decoration: BoxDecoration(
-                        color: Colors.amber.shade400.withValues(alpha: 0.2),
+                        color: Colors.blue.shade400.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(12),
                       ),
-                      child:  Icon(
+                      child: const Icon(
                         Icons.notifications_active_outlined,
-                        color: Colors.amber.shade400,
+                        color: Colors.white,
                         size: 28,
                       ),
                     ),

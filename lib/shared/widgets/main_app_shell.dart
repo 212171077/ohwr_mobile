@@ -5,10 +5,12 @@ import '../widgets/bottom_navigation.dart';
 
 class MainAppShell extends StatefulWidget {
   final Widget Function(NavigationTab) screenBuilder;
+  final VoidCallback onLogout;
 
   const MainAppShell({
     super.key,
     required this.screenBuilder,
+    required this.onLogout,
   });
 
   @override
@@ -22,16 +24,7 @@ class _MainAppShellState extends State<MainAppShell> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppTheme.bgLight,
-      body: SafeArea(
-        bottom: false,
-        child: Column(
-          children: [
-            Expanded(
-              child: widget.screenBuilder(_activeTab),
-            ),
-          ],
-        ),
-      ),
+      body: widget.screenBuilder(_activeTab),
       bottomNavigationBar: BottomNavigation(
         activeTab: _activeTab,
         onTabChanged: (tab) {
@@ -41,4 +34,3 @@ class _MainAppShellState extends State<MainAppShell> {
     );
   }
 }
-

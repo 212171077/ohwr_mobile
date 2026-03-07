@@ -23,202 +23,194 @@ class _ReportsScreenState extends State<ReportsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppTheme.bgLight,
-      body: ListView(
-        padding: EdgeInsets.zero,
-        children: [
-          // Header matching Dashboard/Monitoring/Alerts screens
-          Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-                colors: [
-                  Colors.grey.shade900,
-                  Colors.blue.shade900,
+    return ListView(
+      padding: EdgeInsets.zero,
+      children: [
+        // Header matching Dashboard/Monitoring/Alerts screens
+        Container(
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Colors.grey.shade900,
+                Colors.blue.shade900,
+              ],
+            ),
+            borderRadius: const BorderRadius.only(
+              bottomLeft: Radius.circular(24),
+              bottomRight: Radius.circular(24),
+            ),
+          ),
+          padding: const EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        // AI Badge
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 6,
+                          ),
+                          decoration: BoxDecoration(
+                            color: AppTheme.emeraldGreen.withValues(alpha: 0.2),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(
+                                Icons.description_outlined,
+                                size: 14,
+                                color: AppTheme.emeraldGreen,
+                              ),
+                              const SizedBox(width: 6),
+                              Text(
+                                'VALUE REPORTING',
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.w600,
+                                  color: AppTheme.emeraldGreen,
+                                  letterSpacing: 0.5,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 12),
+                        const Text(
+                          'Performance Reports',
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                            color: Colors.white,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        const Text(
+                          'Executive summaries & insights',
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Color(0xFFCBD5E1),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  const SizedBox(width: 16),
+                  Container(
+                    width: 48,
+                    height: 48,
+                    decoration: BoxDecoration(
+                      color: Colors.blue.shade400.withValues(alpha: 0.2),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: const Icon(
+                      Icons.insert_drive_file_outlined,
+                      color: Colors.white,
+                      size: 28,
+                    ),
+                  ),
                 ],
               ),
-              borderRadius: const BorderRadius.only(
-                bottomLeft: Radius.circular(24),
-                bottomRight: Radius.circular(24),
-              ),
-            ),
-            padding: EdgeInsets.only(
-              top: MediaQuery.of(context).padding.top + 24,
-              left: 24,
-              right: 24,
-              bottom: 32,
-            ),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            ],
+          ),
+        ),
+
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Report Type Selector
+              Container(
+                padding: const EdgeInsets.all(4),
+                decoration: BoxDecoration(
+                  color: AppTheme.bgWhite,
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: const Color(0xFFE2E8F0)),
+                ),
+                child: Row(
                   children: [
-                    Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          // AI Badge
-                          Container(
-                            padding: const EdgeInsets.symmetric(
-                              horizontal: 10,
-                              vertical: 6,
-                            ),
-                            decoration: BoxDecoration(
-                              color: AppTheme.emeraldGreen.withValues(alpha: 0.2),
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                Icon(
-                                  Icons.description_outlined,
-                                  size: 14,
-                                  color: AppTheme.emeraldGreen,
-                                ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  'VALUE REPORTING',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600,
-                                    color: AppTheme.emeraldGreen,
-                                    letterSpacing: 0.5,
-                                  ),
-                                ),
-                              ],
-                            ),
+                    _buildReportTypeButton('performance', 'Performance', Icons.analytics_outlined, AppTheme.primaryBlue),
+                    const SizedBox(width: 4),
+                    _buildReportTypeButton('financial', 'Financial', Icons.attach_money, AppTheme.emeraldGreen),
+                    const SizedBox(width: 4),
+                    _buildReportTypeButton('esg', 'ESG', Icons.energy_savings_leaf, Colors.green),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 24),
+
+              if (_reportType == 'performance') _buildPerformanceView(),
+              if (_reportType == 'financial') _buildFinancialView(),
+              if (_reportType == 'esg') _buildESGView(),
+
+              const SizedBox(height: 24),
+              // Footer Info
+              Container(
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Color(0xFFF8FAFC), Color(0xFFEFF6FF)],
+                  ),
+                  borderRadius: BorderRadius.circular(20),
+                  border: Border.all(color: const Color(0xFFDBEAFE)),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.calendar_month_outlined, color: AppTheme.primaryBlue, size: 20),
+                        const SizedBox(width: 8),
+                        const Text(
+                          'Automated Reporting',
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Color(0xFF0F172A),
                           ),
-                          const SizedBox(height: 12),
-                          const Text(
-                            'Performance Reports',
-                            style: TextStyle(
-                              fontSize: 24,
-                              fontWeight: FontWeight.w700,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(height: 4),
-                          const Text(
-                            'Executive summaries & insights',
-                            style: TextStyle(
-                              fontSize: 13,
-                              color: Color(0xFFCBD5E1),
-                            ),
-                          ),
-                        ],
-                      ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(width: 16),
+                    const SizedBox(height: 12),
+                    const Text(
+                      "Reports are generated monthly and designed to be investor-ready, audit-compliant, and executive-friendly.",
+                      style: TextStyle(fontSize: 13, color: Color(0xFF334155), height: 1.5),
+                    ),
+                    const SizedBox(height: 16),
                     Container(
-                      width: 48,
-                      height: 48,
-                      decoration: BoxDecoration(
-                        color: Colors.amber.shade400.withValues(alpha: 0.2),
-                        borderRadius: BorderRadius.circular(12),
+                      padding: const EdgeInsets.only(top: 16),
+                      decoration: const BoxDecoration(
+                        border: Border(top: BorderSide(color: Color(0xFFDBEAFE))),
                       ),
-                      child: Icon(
-                        Icons.insert_drive_file_outlined,
-                        color:  Colors.amber.shade400,
-                        size: 28,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text('Next report:', style: TextStyle(color: Color(0xFF64748B), fontSize: 13)),
+                          const Text('Feb 1, 2026', style: TextStyle(color: Color(0xFF0F172A), fontWeight: FontWeight.w600, fontSize: 13)),
+                        ],
                       ),
                     ),
                   ],
                 ),
-              ],
-            ),
+              ),
+              const SizedBox(height: 40),
+            ],
           ),
-
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Report Type Selector
-                Container(
-                  padding: const EdgeInsets.all(4),
-                  decoration: BoxDecoration(
-                    color: AppTheme.bgWhite,
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: const Color(0xFFE2E8F0)),
-                  ),
-                  child: Row(
-                    children: [
-                      _buildReportTypeButton('performance', 'Performance', Icons.analytics_outlined, AppTheme.primaryBlue),
-                      const SizedBox(width: 4),
-                      _buildReportTypeButton('financial', 'Financial', Icons.attach_money, AppTheme.emeraldGreen),
-                      const SizedBox(width: 4),
-                      _buildReportTypeButton('esg', 'ESG', Icons.energy_savings_leaf, Colors.green),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                if (_reportType == 'performance') _buildPerformanceView(),
-                if (_reportType == 'financial') _buildFinancialView(),
-                if (_reportType == 'esg') _buildESGView(),
-
-                const SizedBox(height: 24),
-                // Footer Info
-                Container(
-                  padding: const EdgeInsets.all(20),
-                  decoration: BoxDecoration(
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [Color(0xFFF8FAFC), Color(0xFFEFF6FF)],
-                    ),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: const Color(0xFFDBEAFE)),
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Row(
-                        children: [
-                          Icon(Icons.calendar_month_outlined, color: AppTheme.primaryBlue, size: 20),
-                          const SizedBox(width: 8),
-                          const Text(
-                            'Automated Reporting',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              color: Color(0xFF0F172A),
-                            ),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(height: 12),
-                      const Text(
-                        "Reports are generated monthly and designed to be investor-ready, audit-compliant, and executive-friendly.",
-                        style: TextStyle(fontSize: 13, color: Color(0xFF334155), height: 1.5),
-                      ),
-                      const SizedBox(height: 16),
-                      Container(
-                        padding: const EdgeInsets.only(top: 16),
-                        decoration: const BoxDecoration(
-                          border: Border(top: BorderSide(color: Color(0xFFDBEAFE))),
-                        ),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text('Next report:', style: TextStyle(color: Color(0xFF64748B), fontSize: 13)),
-                            const Text('Feb 1, 2026', style: TextStyle(color: Color(0xFF0F172A), fontWeight: FontWeight.w600, fontSize: 13)),
-                          ],
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 40),
-              ],
-            ),
-          ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 
@@ -591,7 +583,7 @@ class _ReportsScreenState extends State<ReportsScreen> {
             final kpi = entry.value;
             final isLast = idx == kpis.length - 1;
             return Container(
-              padding: const EdgeInsets.symmetric(vertical: 12),
+              padding: EdgeInsets.symmetric(vertical: 12),
               decoration: BoxDecoration(
                 border: isLast ? null : const Border(bottom: BorderSide(color: Color(0xFFF1F5F9))),
               ),

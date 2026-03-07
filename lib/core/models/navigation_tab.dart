@@ -4,6 +4,7 @@ enum NavigationTab {
   optimization,
   alerts,
   reports,
+  profile,
 }
 
 extension NavigationTabExtension on NavigationTab {
@@ -19,7 +20,8 @@ extension NavigationTabExtension on NavigationTab {
         return 'Alerts';
       case NavigationTab.reports:
         return 'Reports';
+      case NavigationTab.profile:
+        return 'Profile';
     }
   }
 }
-

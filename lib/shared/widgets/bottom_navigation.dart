@@ -63,6 +63,11 @@ class BottomNavigation extends StatelessWidget {
             activeIcon: Icon(Icons.description, size: 24),
             label: 'Reports',
           ),
+          const BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline, size: 24),
+            activeIcon: Icon(Icons.person, size: 24),
+            label: 'Profile',
+          ),
         ],
         selectedItemColor: AppTheme.primaryBlue,
         unselectedItemColor: const Color(0xFF94A3B8),
@@ -114,4 +119,3 @@ class _AlertIcon extends StatelessWidget {
     );
   }
 }
-
